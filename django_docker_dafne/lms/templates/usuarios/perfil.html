@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Perfil de Usuario</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold">Bienvenido, {{ usuario.nombre }}</h1>
+            <a href="{% url 'logout' %}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Cerrar sesión</a>
+        </div>
+        
+        <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Tu perfil</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <p><strong>Nombre:</strong> {{ usuario.nombre }} {{ usuario.apellido }}</p>
+                    <p><strong>Email:</strong> {{ usuario.email }}</p>
+                    <p><strong>Rol:</strong> 
+                        {% if usuario.rol == 'estudiante' %}
+                            Estudiante
+                        {% elif usuario.rol == 'instructor' %}
+                            Instructor
+                        {% else %}
+                            Administrador
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        {% if cursos_inscritos %}
+        <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Tus cursos inscritos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for curso in cursos_inscritos %}
+                <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2">{{ curso.titulo }}</h3>
+                        <p class="text-gray-600 text-sm mb-4">{{ curso.description|truncatechars:100 }}</p>
+                        <a href="#" class="text-blue-500 hover:text-blue-700">Continuar curso</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Cursos disponibles</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for curso in cursos_disponibles %}
+                <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-2">{{ curso.titulo }}</h3>
+                        <p class="text-gray-600 text-sm mb-4">{{ curso.description|truncatechars:100 }}</p>
+                        <a href="http://localhost:8500/curso-view/?curso_id={{ curso.id }}" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">Ver detalles</a>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="col-span-3 text-center text-gray-500">No hay cursos disponibles en este momento.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
