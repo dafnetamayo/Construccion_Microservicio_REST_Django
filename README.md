@@ -7,19 +7,31 @@ API REST para una plataforma de cursos en línea que gestiona **usuarios**, **cu
 
 ## Requisitos
 - Docker y docker-compose instalados.
-- Puerto `8500` disponible en tu máquina (puedes cambiarlo en `docker-compose.yml`).
+- Puerto `8500` disponible (puedes cambiarlo en `docker-compose.yml`).
 
 ---
 
 ## Cómo ejecutar con Docker
 
-1. Construir y levantar contenedores:
+Construir y levantar contenedores:
    ```bash
    docker-compose up --build
-   
-2. Aplicar migraciones (con los contenedores arriba):
+   # (según tu versión también puedes usar:)
+   # docker compose up --build
 
+## Aplicar migraciones (con los contenedores arriba)
+
+```bash
 docker-compose exec web python manage.py migrate
+# o:
+# docker compose exec web python manage.py migrate
+
+## Crear superusuario
+
+docker-compose exec web python manage.py createsuperuser
+# alternativa (si conoces el nombre del contenedor):
+# docker exec -it <nombre-del-contenedor> python manage.py createsuperuser
+# verifica el nombre con: docker ps
 
 
-
+## Quedara disponible en http://localhost:8500/
